@@ -1,0 +1,62 @@
+{
+  "id": "care-gap-observatory",
+  "name": "Care Gap Observatory",
+  "version": "0.1.0",
+  "description": "Analyze diagnoses, treatment pathways and costs in public medical-charity campaigns.",
+  "author": "local",
+  "license": "UNLICENSED",
+  "entry": "index.jsx",
+  "offline_capable": true,
+  "offline": {
+    "reads": true,
+    "writes": "none",
+    "execution": "full"
+  },
+  "runtime": {
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": []
+  },
+  "source_files": [
+    "app.js",
+    "template.js",
+    "theme.js",
+    "styles.css",
+    "index.html",
+    "data/cases.json",
+    "scripts/full_pipeline.py",
+    "scripts/coding_schema.json",
+    "map-geometry.js",
+    "scripts/outcome_pilot.py",
+    "scripts/outcome_schema.json"
+  ],
+  "schedule": {
+    "default": "*/15 * * * *",
+    "user_configurable": false,
+    "job": "job.sh"
+  },
+  "icon": "static/store/icon.png",
+  "store": {
+    "tagline": "See the care gaps inside public medical-fundraising campaigns",
+    "description": "Care Gap Observatory is a descriptive dashboard over 663 publicly documented Pomozi.ba medical-fundraising cases from Bosnia and Herzegovina. It brings diagnoses, treatment destinations, quoted costs and data-quality limits into one place so you can read the pattern of medical need, spot where care moves abroad, and understand what the corpus can and cannot support.\n\nSix specialist tabs cover clinical profiles, campaign finances, geography, record-level exploration with filters and CSV export, and explicit data-quality review. Every figure is campaign-derived evidence, clearly framed as neither a national census nor a policy ranking.",
+    "screenshots": [
+      {
+        "src": "static/store/overview.png",
+        "label": "Overview",
+        "alt": "Overview tab showing headline figures for 663 coded treatment cases, quoted treatment costs and campaign targets."
+      },
+      {
+        "src": "static/store/medical.png",
+        "label": "Medical profile",
+        "alt": "Medical tab with a donut chart and ranked list of cases by medical specialty, led by oncology."
+      },
+      {
+        "src": "static/store/explore.png",
+        "label": "Explore cases",
+        "alt": "Explore tab with filters for specialty, diagnosis, destination, status, age and publication year above the case table."
+      }
+    ]
+  }
+}
