@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["records"],
+  "properties": {
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id", "campaign_type", "patient_name", "age_years", "sex",
+          "location_city", "location_region", "primary_specialty",
+          "secondary_specialties", "main_diagnosis", "diagnosis_group",
+          "side_diagnoses", "disease_stage_severity", "earlier_treatments",
+          "earlier_hospitals", "earlier_treatment_outcome",
+          "earlier_failure_reason_codes", "abroad_reason_codes",
+          "proposed_treatments", "treatment_outcome",
+          "total_medical_cost_original", "available_funding_original",
+          "insurance_status", "urgency", "review_required", "reviewer_notes",
+          "field_provenance"
+        ],
+        "properties": {
+          "source_id": {"type": "integer"},
+          "campaign_type": {"enum": ["individual_medical_case", "pooled_fund", "institutional_or_equipment", "unclear"]},
+          "patient_name": {"type": ["string", "null"]},
+          "age_years": {"type": ["number", "null"], "minimum": 0, "maximum": 120},
+          "sex": {"enum": ["female", "male", "other", "unknown"]},
+          "location_city": {"type": ["string", "null"]},
+          "location_region": {"type": ["string", "null"]},
+          "primary_specialty": {"type": ["string", "null"]},
+          "secondary_specialties": {"type": "array", "items": {"type": "string"}},
+          "main_diagnosis": {"type": ["string", "null"]},
+          "diagnosis_group": {"type": ["string", "null"]},
+          "side_diagnoses": {"type": "array", "items": {"type": "string"}},
+          "disease_stage_severity": {"type": ["string", "null"]},
+          "earlier_treatments": {"type": "array", "items": {"type": "string"}},
+          "earlier_hospitals": {"type": "array", "items": {"type": "string"}},
+          "earlier_treatment_outcome": {"type": ["string", "null"]},
+          "earlier_failure_reason_codes": {"type": "array", "items": {"type": "string"}},
+          "abroad_reason_codes": {"type": "array", "items": {"type": "string"}},
+          "proposed_treatments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["type", "detail", "intent", "location_city", "country", "hospital", "status"],
+              "properties": {
+                "type": {"type": ["string", "null"]}, "detail": {"type": ["string", "null"]},
+                "intent": {"type": ["string", "null"]}, "location_city": {"type": ["string", "null"]},
+                "country": {"type": ["string", "null"]}, "hospital": {"type": ["string", "null"]},
+                "status": {"type": ["string", "null"]}
+              }
+            }
+          },
+          "treatment_outcome": {"type": ["string", "null"]},
+          "total_medical_cost_original": {"$ref": "#/$defs/money"},
+          "available_funding_original": {"$ref": "#/$defs/moneyWithSource"},
+          "insurance_status": {"type": ["string", "null"]},
+          "urgency": {"type": ["string", "null"]},
+          "review_required": {"type": "boolean"},
+          "reviewer_notes": {"type": ["string", "null"]},
+          "field_provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "campaign_type", "patient_name", "age_years", "sex", "location_city",
+              "location_region", "primary_specialty", "secondary_specialties",
+              "main_diagnosis", "diagnosis_group", "side_diagnoses",
+              "disease_stage_severity", "earlier_treatments", "earlier_hospitals",
+              "earlier_treatment_outcome", "earlier_failure_reason_codes",
+              "abroad_reason_codes", "proposed_treatments", "treatment_outcome",
+              "total_medical_cost_original", "available_funding_original",
+              "insurance_status", "urgency"
+            ],
+            "properties": {
+              "campaign_type": {"$ref": "#/$defs/provenance"},
+              "patient_name": {"$ref": "#/$defs/provenance"},
+              "age_years": {"$ref": "#/$defs/provenance"},
+              "sex": {"$ref": "#/$defs/provenance"},
+              "location_city": {"$ref": "#/$defs/provenance"},
+              "location_region": {"$ref": "#/$defs/provenance"},
+              "primary_specialty": {"$ref": "#/$defs/provenance"},
+              "secondary_specialties": {"$ref": "#/$defs/provenance"},
+              "main_diagnosis": {"$ref": "#/$defs/provenance"},
+              "diagnosis_group": {"$ref": "#/$defs/provenance"},
+              "side_diagnoses": {"$ref": "#/$defs/provenance"},
+              "disease_stage_severity": {"$ref": "#/$defs/provenance"},
+              "earlier_treatments": {"$ref": "#/$defs/provenance"},
+              "earlier_hospitals": {"$ref": "#/$defs/provenance"},
+              "earlier_treatment_outcome": {"$ref": "#/$defs/provenance"},
+              "earlier_failure_reason_codes": {"$ref": "#/$defs/provenance"},
+              "abroad_reason_codes": {"$ref": "#/$defs/provenance"},
+              "proposed_treatments": {"$ref": "#/$defs/provenance"},
+              "treatment_outcome": {"$ref": "#/$defs/provenance"},
+              "total_medical_cost_original": {"$ref": "#/$defs/provenance"},
+              "available_funding_original": {"$ref": "#/$defs/provenance"},
+              "insurance_status": {"$ref": "#/$defs/provenance"},
+              "urgency": {"$ref": "#/$defs/provenance"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "provenance": {"enum": ["explicit", "inferred", "unknown", "derived"]},
+    "money": {
+      "type": "object", "additionalProperties": false, "required": ["amount", "currency"],
+      "properties": {"amount": {"type": ["number", "null"]}, "currency": {"type": ["string", "null"]}}
+    },
+    "moneyWithSource": {
+      "type": "object", "additionalProperties": false, "required": ["amount", "currency", "source"],
+      "properties": {"amount": {"type": ["number", "null"]}, "currency": {"type": ["string", "null"]}, "source": {"type": ["string", "null"]}}
+    }
+  }
+}

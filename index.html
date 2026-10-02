@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobius-theme" content="inherit">
+  <meta name="description" content="Pilot analysis of public Pomozi.ba medical treatment campaigns">
+  <title>Care Gap Observatory</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span></div>
+        <div><p class="eyebrow">Medical charity intelligence</p><h1>Care Gap Observatory</h1></div>
+      </div>
+      <div class="top-actions">
+        <span class="pilot-pill">Pomozi.ba · pilot</span>
+        <button class="button ghost" id="methodButton">Methodology</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow accent" id="heroCorpus">Current coded public treatment cases</p>
+          <h2>Where care becomes<br><em>financially unreachable.</em></h2>
+          <p class="hero-copy">A descriptive view of diagnoses, proposed treatments, care pathways and publicly visible campaign funding. It identifies signals—not national investment priorities.</p>
+        </div>
+        <div class="scope-card">
+          <span class="scope-icon">i</span>
+          <div><strong>Primary analysis only</strong><p>Policy ranking is deliberately separated until population need, local capacity, outcomes and system costs are added.</p></div>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="Analysis sections">
+        <button class="tab active" data-view="overview">Overview</button>
+        <button class="tab" data-view="cases">Case explorer</button>
+        <button class="tab" data-view="quality">Data quality</button>
+        <button class="tab" data-view="policy">Policy lab <span>beta</span></button>
+      </nav>
+
+      <section class="filterbar" id="filterbar">
+        <label class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search patient, diagnosis or treatment…"></label>
+        <label><span>Specialty</span><select id="specialtyFilter"><option value="">All specialties</option></select></label>
+        <label><span>Status</span><select id="statusFilter"><option value="">All statuses</option><option value="active">Active</option><option value="completed">Completed</option></select></label>
+        <label><span>Age</span><select id="ageFilter"><option value="">All ages</option></select></label>
+        <button class="button ghost compact" id="clearFilters">Clear</button>
+      </section>
+
+      <section id="overviewView" class="view active">
+        <div id="kpis" class="kpi-grid"></div>
+        <div class="section-heading"><div><p class="eyebrow">Clinical profile</p><h3>What care is being sought?</h3></div><p class="section-note" id="filterSummary"></p></div>
+        <div class="chart-grid two-one">
+          <article class="panel"><div class="panel-head"><div><h4>Cases by specialty</h4><p>Share of selected cases</p></div><span class="chart-type">DONUT</span></div><div id="specialtyDonut" class="chart"></div></article>
+          <article class="panel"><div class="panel-head"><div><h4>Most frequent diagnoses</h4><p>Grouped from campaign wording</p></div><span class="chart-type">RANKED BAR</span></div><div id="diagnosisBars" class="chart"></div></article>
+        </div>
+        <div class="chart-grid two">
+          <article class="panel"><div class="panel-head"><div><h4>Why care is sought abroad</h4><p>Multiple reasons may apply</p></div><span class="chart-type">BAR</span></div><div id="abroadBars" class="chart"></div></article>
+          <article class="panel"><div class="panel-head"><div><h4>Earlier treatment barriers</h4><p>Failure or insufficiency stated in source</p></div><span class="chart-type">BAR</span></div><div id="failureBars" class="chart"></div></article>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">Costs & interventions</p><h3>How large are the documented gaps?</h3></div></div>
+        <div class="chart-grid two">
+          <article class="panel"><div class="panel-head"><div><h4>Treatment-cost distribution</h4><p>Known quoted medical costs, standardized to BAM</p></div><span class="chart-type">HISTOGRAM</span></div><div id="costHistogram" class="chart"></div></article>
+          <article class="panel"><div class="panel-head"><div><h4>Cost spread by specialty</h4><p>Median, quartiles and range; known costs only</p></div><span class="chart-type">BOX PLOT</span></div><div id="costBoxplot" class="chart"></div></article>
+        </div>
+        <div class="chart-grid two-one">
+          <article class="panel"><div class="panel-head"><div><h4>Specialty × treatment</h4><p>Number of cases in each intersection</p></div><span class="chart-type">MATRIX</span></div><div id="treatmentMatrix" class="chart"></div></article>
+          <article class="panel"><div class="panel-head"><div><h4>Website-visible funding</h4><p>Not total campaign receipts</p></div><span class="chart-type">PROGRESS</span></div><div id="fundingList" class="chart"></div></article>
+        </div>
+      </section>
+
+      <section id="casesView" class="view">
+        <div class="section-heading"><div><p class="eyebrow">Source-linked records</p><h3>Case explorer</h3></div><button class="button ghost" id="exportCsv">Export filtered CSV</button></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Patient / campaign</th><th>Specialty</th><th>Main diagnosis</th><th>Proposed care</th><th>Quoted cost</th><th>Website funding</th><th>Status</th></tr></thead><tbody id="caseRows"></tbody></table></div>
+      </section>
+
+      <section id="qualityView" class="view">
+        <div class="section-heading"><div><p class="eyebrow">Evidence first</p><h3>Data quality & provenance</h3></div></div>
+        <div class="quality-grid"><article class="panel"><h4>Completeness by field</h4><p class="panel-copy">Unknown is preserved as unknown rather than interpreted as “no.”</p><div id="completenessBars" class="chart"></div></article><article class="panel"><h4>Review principles</h4><ul class="principle-list"><li><b>Explicit</b><span>Directly stated by Pomozi.ba.</span></li><li><b>Inferred</b><span>Conservative categorization from source wording.</span></li><li><b>Unknown</b><span>Not available in the public campaign.</span></li><li><b>Website-visible funds</b><span>Only “Doniraj odmah” payments—not all channels.</span></li></ul></article></div>
+        <article class="panel data-tools"><div><h4>Manual dataset update</h4><p class="panel-copy">Import a reviewed JSON dataset for this browser, or restore the bundled corpus.</p></div><div class="tool-actions"><label class="button primary" for="jsonImport">Import JSON</label><input id="jsonImport" type="file" accept="application/json"><button class="button ghost" id="downloadJson">Download current JSON</button><button class="button danger-ghost" id="resetData">Restore bundled data</button></div><p id="importStatus" class="status-line" role="status"></p></article>
+      </section>
+
+      <section id="policyView" class="view">
+        <div class="policy-hero compact-hero"><div class="lock-mark ready">↗</div><p class="eyebrow">Separate scenario workspace</p><h3>Policy & investment lab</h3><p>Compare healthcare-development scenarios using explicit national assumptions. The charity sample supplies context only—it never fills missing national evidence.</p><div class="phase-row"><span class="phase done">1 · Charity signals</span><span class="phase active">2 · Scenario inputs</span><span class="phase">3 · Evidence-backed comparison</span></div></div>
+
+        <div class="scope-card wide"><span class="scope-icon">!</span><div><strong>Evidence gate is active</strong><p>Results appear only for specialties with complete national volume, capacity and cost assumptions. Empty inputs stay unknown; they are never silently treated as zero.</p></div></div>
+
+        <div class="section-heading"><div><p class="eyebrow">Observed—not representative</p><h3>Charity-case signals</h3></div><p class="section-note" id="policyCorpus">Current coded corpus</p></div>
+        <div id="policySignals" class="signal-grid"></div>
+
+        <div class="section-heading policy-heading"><div><p class="eyebrow">Your assumptions</p><h3>Specialty scenarios</h3></div><div class="policy-actions"><label><span>Horizon</span><select id="policyHorizon"><option value="5">5 years</option><option value="10">10 years</option></select></label><label><span>Compare by</span><select id="policyObjective"><option value="patients">Patients reached</option><option value="netValue">Net economic value</option><option value="household">Household savings</option><option value="costPerPatient">Lowest investment per patient</option></select></label><button class="button ghost" id="exportPolicy">Export scenarios</button><button class="button danger-ghost" id="resetPolicy">Reset</button></div></div>
+        <div class="table-wrap policy-table-wrap"><table class="policy-table"><thead><tr><th>Specialty</th><th>Pilot signal</th><th>Evidence readiness</th><th>Annual patients</th><th>Service capacity</th><th>Capital cost</th><th></th></tr></thead><tbody id="policyRows"></tbody></table></div>
+
+        <div class="section-heading"><div><p class="eyebrow">Calculated only when ready</p><h3>Scenario comparison</h3></div><p class="section-note" id="policyResultNote"></p></div>
+        <div id="policyRanking" class="policy-ranking"></div>
+
+        <details class="panel formula-panel"><summary>Formula definitions and interpretation</summary><div class="formula-grid"><div><b>Patients reached</b><p>Lower of eligible annual patients and planned annual service capacity, multiplied by the selected horizon.</p></div><div><b>Net economic value</b><p>System cost avoided + household cost avoided + productivity gain − variable local treatment cost − annual fixed operating cost − capital cost.</p></div><div><b>Investment per patient</b><p>Capital, fixed operating and variable local treatment costs divided by patients reached over the horizon.</p></div><div><b>Break-even</b><p>Capital cost divided by annual net benefit before capital. No break-even is shown when annual benefit is zero or negative.</p></div></div><p class="notice">These are scenario calculations, not causal estimates. Results depend entirely on supplied assumptions and should be accompanied by sources, sensitivity ranges and clinical review before policy use.</p></details>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="methodDialog"><button class="dialog-close" aria-label="Close">×</button><p class="eyebrow">Methodology</p><h3>What this pilot measures</h3><div id="methodContent"></div></dialog>
+  <dialog id="caseDialog"><button class="dialog-close" aria-label="Close">×</button><div id="caseDetail"></div></dialog>
+  <dialog id="policyDialog"><button class="dialog-close" aria-label="Close">×</button><p class="eyebrow">Policy scenario</p><h3 id="policyDialogTitle">Configure specialty</h3><form id="policyForm"><input type="hidden" id="policySpecialty"><div class="policy-form-grid">
+    <label><span>Annual eligible patients *</span><input id="annualPatients" type="number" min="0" step="1" placeholder="People per year"></label>
+    <label><span>Planned service capacity *</span><input id="serviceCapacity" type="number" min="0" step="1" placeholder="People per year"></label>
+    <label><span>One-time capital cost *</span><input id="capitalCost" type="number" min="0" step="1000" placeholder="BAM"></label>
+    <label><span>Annual fixed operating cost *</span><input id="operatingCost" type="number" min="0" step="1000" placeholder="BAM per year"></label>
+    <label><span>Current system cost per patient *</span><input id="currentCost" type="number" min="0" step="100" placeholder="BAM"></label>
+    <label><span>Local variable cost per patient *</span><input id="localCost" type="number" min="0" step="100" placeholder="BAM"></label>
+    <label><span>Household cost avoided per patient</span><input id="householdAvoided" type="number" min="0" step="100" placeholder="BAM; blank = unknown"></label>
+    <label><span>Productivity gain per patient</span><input id="productivityGain" type="number" min="0" step="100" placeholder="BAM; blank = unknown"></label>
+    <label><span>Expected QALY gain per patient</span><input id="qalyGain" type="number" min="0" step="0.01" placeholder="Optional; not monetized"></label>
+    <label class="wide-field"><span>Evidence and assumptions *</span><textarea id="policyEvidence" rows="4" placeholder="Source links, year, population definition, costing assumptions, capacity constraints…"></textarea></label>
+  </div><p class="form-help">* Required for a scenario to enter comparison. Household and productivity effects remain visibly incomplete until entered—even when the intended value is zero.</p><div class="dialog-actions"><button type="button" class="button ghost" id="clearPolicyScenario">Clear this scenario</button><button type="submit" class="button primary">Save scenario</button></div></form></dialog>
+  <script type="module">
+    import {init} from './app.js';
+    const response = await fetch('./data/cases.json');
+    await init(await response.json());
+  </script>
+</body>
+</html>
