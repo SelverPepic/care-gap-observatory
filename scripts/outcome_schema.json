@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["records"],
+  "properties": {
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["record_id", "source_id", "patient_name", "search_status", "matched_posts", "outcome_mentioned", "outcome_category", "outcome_summary", "identity_match_basis", "confidence", "review_required", "notes"],
+        "properties": {
+          "record_id": {"type": "string"},
+          "source_id": {"type": "integer"},
+          "patient_name": {"type": ["string", "null"]},
+          "search_status": {"type": "string", "enum": ["confirmed_match", "probable_match_needs_review", "no_indexed_evidence", "source_inaccessible"]},
+          "matched_posts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "published_date", "evidence_excerpt"],
+              "properties": {
+                "url": {"type": "string"},
+                "published_date": {"type": ["string", "null"]},
+                "evidence_excerpt": {"type": "string"}
+              }
+            }
+          },
+          "outcome_mentioned": {"type": "boolean"},
+          "outcome_category": {"type": ["string", "null"], "enum": ["favorable_response_or_recovery", "mixed_or_interim_with_residual_condition", "treatment_or_procedure_completed_benefit_unknown", "death_reported", "new_or_continued_fundraising", "other_reported_event", "no_outcome_found", null]},
+          "outcome_summary": {"type": ["string", "null"]},
+          "identity_match_basis": {"type": "array", "items": {"type": "string"}},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low", "none"]},
+          "review_required": {"type": "boolean"},
+          "notes": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

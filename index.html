@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobius-theme" content="inherit">
+  <meta name="description" content="Explore anonymized medical-fundraising case records, care destinations, treatment costs, and evidence limits.">
+  <meta name="theme-color" content="#0b0b0d">
+  <title>Care Gap Observatory</title>
+  <link rel="icon" href="./static/store/icon.png" type="image/png">
+</head>
+<body>
+  <div id="app"><main style="padding:40px;font-family:system-ui,sans-serif"><h1>Loading Care Gap Observatory…</h1></main></div>
+  <script type="module">
+    import cases1 from './data/cases-1.json' with { type: 'json' };
+    import cases2 from './data/cases-2.json' with { type: 'json' };
+    import cases3 from './data/cases-3.json' with { type: 'json' };
+    import {TEMPLATE} from './template.js';
+    import {CSS} from './theme.js';
+    import {init} from './app.js';
+
+    const cases = [...cases1, ...cases2, ...cases3];
+    const style = document.createElement('style');
+    style.textContent = CSS;
+    document.head.append(style);
+    document.getElementById('app').innerHTML = TEMPLATE;
+
+    try {
+      await init(cases);
+    } catch (error) {
+      document.getElementById('app').innerHTML = `<main style="padding:40px;font-family:system-ui,sans-serif"><h1>Dataset could not load</h1><p>${String(error.message)}</p></main>`;
+    }
+  </script>
+</body>
+</html>
